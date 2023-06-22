@@ -1,0 +1,9 @@
+---
+- name: CLUSTER-PG | reboot hosts
+  hosts: all 
+  become: yes
+
+  roles:
+    - update_os
+ 
+

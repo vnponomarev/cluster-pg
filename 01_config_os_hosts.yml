@@ -1,0 +1,8 @@
+---
+- name: CLUSTER-PG | change hostname and hosts
+  hosts: all 
+  gather_facts: yes
+  
+  roles:
+    - config_os_hosts
+  

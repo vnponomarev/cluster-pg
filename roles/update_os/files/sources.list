@@ -1,0 +1,11 @@
+#deb cdrom:[OS Astra Linux 1.6 smolensk - amd64 DVD ]/ smolensk contrib main non-free
+
+deb http://192.168.110.253/astra-1.7 stable  main contrib non-free
+deb http://192.168.110.253/astra-1.7-devel stable  main contrib non-free
+
+deb http://192.168.110.253/astra-1.7.3-update stable  main contrib non-free
+deb http://192.168.110.253/astra-1.7.3.uu1-update stable  main contrib non-free
+
+
+
+#deb http://192.168.110.253/rsvo smolensk main

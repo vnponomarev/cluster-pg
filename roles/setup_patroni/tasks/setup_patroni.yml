@@ -1,0 +1,191 @@
+---
+# tasks file for setup_patroni
+
+- name: CLUSTER PATRONI | test install git ...
+  command:
+    cmd: dpkg -l git
+  register: status_git
+  ignore_errors: true 
+ 
+- name: CLUSTER PATRONI | DEBUG
+  debug:
+    var: status_git.rc
+   
+- name: CLUSTER PATRONI | ... and install git if not install
+  apt:
+    name: git
+    state: present
+  when: status_git.rc == 1
+  
+- name: CLUSTER PATRONI | install gcc
+  apt:
+    name: gcc
+    state: present
+    
+- name: CLUSTER PATRONI | install python-dev
+  apt:
+    name: python-dev
+    state: present
+
+- name: CLUSTER PATRONI | test install postgres ...
+  command:
+    cmd: dpkg -l postgresql
+  register: status_postgresql
+  ignore_errors: true
+  
+- name: DEBUG
+  debug:
+    var: status_postgresql.rc
+  
+- name: CLUSTER PATRONI | ... and setup postgres if not install
+  apt:
+    name: postgresql
+    state: present
+  when: status_postgresql.rc == 1
+ 
+- name: CLUSTER PATRONI | Extract patroni-master.zip 
+  unarchive:
+    src: patroni-master.zip
+    dest: /opt
+    owner: postgres
+    group: postgres
+  
+- name: CLUSTER PATRONI | test install python-psycopg2 ...
+  command:
+    cmd: dpkg -l python-psycopg2 
+  register: status_python_psycopg2 
+  ignore_errors: true
+  
+- name: CLUSTER PATRONI | ... and setup python-psycopg2 if not install
+  apt:
+    name: python-psycopg2 
+    state: present
+  when: status_python_psycopg2.rc == 1
+  
+- name: CLUSTER PATRONI | test install python3-psycopg2 ...
+  command:
+    cmd: dpkg -l python3-psycopg2 
+  register: status_python3_psycopg2 
+  ignore_errors: true
+  
+- name: CLUSTER PATRONI | ... and setup python3-psycopg3 if not install
+  apt:
+    name: python3-psycopg2 
+    state: present
+  when: status_python3_psycopg2.rc == 1
+  
+- name: CLUSTER PATRONI | test install pip ...
+  command:
+    cmd: dpkg -l python-pip
+  register: status_python_pip 
+  ignore_errors: true
+  
+- name: CLUSTER PATRONI | ... and setup python-pip if not install
+  apt:
+    name: python-pip
+    state: present
+  when: status_python_pip.rc == 1
+  
+- name: CLUSTER PATRONI | test install python-yaml ...
+  command:
+    cmd: dpkg -l python-yaml
+  register: status_python_yaml 
+  ignore_errors: true
+  
+- name: CLUSTER PATRONI | ... and setup python-yaml if not install
+  apt:
+    name: python-yaml
+    state: present
+  when: status_python_yaml.rc == 1
+  
+- name: CLUSTER PATRONI | test install pip3 ...
+  command:
+    cmd: dpkg -l python3-pip
+  register: status_python3_pip 
+  ignore_errors: true
+  
+- name: CLUSTER PATRONI | ... and setup python3-pip if not install
+  apt:
+    name: python3-pip
+    state: present
+  when: status_python3_pip.rc == 1
+  
+- name: CLUSTER PATRONI | install module six ...
+  command:
+    cmd: python -m pip install six 
+   
+- name: CLUSTER PATRONI | install python-dateutil ...
+  apt:
+    name: python-dateutil
+    state: present
+    
+- name: CLUSTER PATRONI | install python3-dateutil ...
+  apt:
+    name: python3-dateutil
+    state: present
+
+- name: CLUSTER PATRONI | install module python-psutil ...
+  apt:
+    name: python-psutil
+    state: present
+    
+- name: CLUSTER PATRONI | install module python3-psutil ...
+  apt:
+    name: python3-psutil
+    state: present
+    
+- name: CLUSTER PATRONI | install module python-urllib3 ...
+  apt:
+    name: python-urllib3
+    state: present
+    
+- name: CLUSTER PATRONI | install module python3-urllib3 ...
+  apt:
+    name: python3-urllib3
+    state: present
+    
+- name: CLUSTER PATRONI | install module python-ipaddress ...
+  apt:
+    name: python-ipaddress
+   
+- name: CLUSTER PATRONI | install module python-click ...
+  apt:
+    name: python-click
+    state: present
+
+- name: CLUSTER PATRONI | install module python3-click ...
+  apt:
+    name: python3-click
+    state: present
+    
+- name: CLUSTER PATRONI | install module python-prettytable ...
+  apt:
+    name: python-prettytable
+    state: present
+    
+- name: CLUSTER PATRONI | install module python3-prettytable ...
+  apt:
+    name: python3-prettytable
+    state: present
+    
+- name: CLUSTER PATRONI | install module cdiff ...
+  command:
+    cmd: python -m pip install cdiff    
+    
+- name: CLUSTER PATRONI | install module python-pytest ...
+  apt:
+    name: python-pytest
+    state: present
+    
+- name: CLUSTER PATRONI | install module python3-pytest ...
+  apt:
+    name: python3-pytest
+    state: present
+    
+- name: CLUSTER PATRONI | install module python-etcd ...
+  command:
+    cmd: python -m pip install python-etcd
+    
+- name: CLUSTER PATRONI | install module python-etcd ...
+  command:
+    cmd: python3 -m pip install python-etcd

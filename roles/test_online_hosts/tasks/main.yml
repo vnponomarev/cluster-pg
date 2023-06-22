@@ -1,0 +1,5 @@
+---
+# tasks file for cluster-pg
+
+- name: CLUSTER-PG | include test-online-hosts
+  include: test-online-hosts.yml 

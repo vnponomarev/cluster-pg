@@ -1,0 +1,14 @@
+---
+# tasks file for cluster-pg---
+
+- name: CLUSTER-PG | method ping 
+  ping: 
+  
+- name: CLUSTER-PG | test version OS, read file /etc/astra_version
+  shell: cat /etc/astra_version
+  register: result_astra_version
+  
+
+- name: CLUSTER-PG | pring hostname and ip
+  debug:
+    msg: "{{ ansible_nodename }} * {{ ansible_eth0.ipv4.address }} * {{ ansible_lsb.description }} ver:{{ result_astra_version.stdout }}"

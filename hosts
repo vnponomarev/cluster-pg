@@ -1,0 +1,14 @@
+# Name "servers" set up hostname for machine, ansible_host this ip machines 
+# receving in process setup OS, ip_new_setup this ip which will be setup static systemd tools.
+# DO NOT REMEMBER!!! 
+# - setup right gateway in file roles/config_os_hosts/defaults/main.yml
+# - setup right variable ip in clusters etcd and patroni
+
+[servers]
+cl-1     ansible_host=192.168.119.61    ip_new_setup=192.168.119.61
+cl-2     ansible_host=192.168.119.62    ip_new_setup=192.168.119.62
+cl-3     ansible_host=192.168.119.63    ip_new_setup=192.168.119.63
+
+[cluster:children]
+servers
+

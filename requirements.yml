@@ -1,0 +1,4 @@
+---
+- src: git@gitflic.ru:vnponomarev/cluster-pg.git
+  scm: git
+  version: master

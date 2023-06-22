@@ -1,0 +1,25 @@
+---
+# handlers file for SETUP-UPAK
+- name: restart networkd service
+  systemd: 
+    name: "systemd-networkd.service"
+    state: restarted
+     
+- name: restart resolved service 
+  systemd: 
+    name: "systemd-resolved.service"
+    state: restarted
+      
+- name: restart timesyncd service 
+  systemd: 
+    name: "systemd-timesyncd.service"
+    state: restarted
+
+#- name: UPAK | restart systemd-networkd.service systemd-resolved.service systemd-timesyncd.service
+#  systemd: 
+#    name: "{{ item }}"
+#    state: restarted
+#  with_items:
+#    - systemd-networkd.service
+#    - systemd-resolved.service
+#    - systemd-timesyncd.service

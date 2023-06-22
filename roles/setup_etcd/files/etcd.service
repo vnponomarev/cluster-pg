@@ -1,0 +1,18 @@
+[Unit]
+Description=Start ETCD
+After=syslog.target
+After=network-online.target
+[Service]
+Environment=ETCD_DATA_DIR=/opt/etcd-3.4.22/bin/
+Environment=ETCD_NAME=%m
+PDPLabel=0:0:0
+LimitNOFILE=65535
+Type=simple
+KillMode=process
+Restart=on-failure
+User=etcd
+Group=etcd
+ExecStart=/opt/etcd-3.4.22/start_etcd.sh
+TimeoutSec=30
+[Install]
+WantedBy=multi-user.target

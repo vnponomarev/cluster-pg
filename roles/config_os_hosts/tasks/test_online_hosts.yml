@@ -1,0 +1,24 @@
+---
+# tasks file for test_online_hosts
+
+- name: CLUSTER-PG | method ping 
+  ping:
+  
+- name: CLUSTER-PG | pring hostname and ip
+  debug:
+    msg: "{{ ansible_nodename }} * {{ ansible_eth0.ipv4.address }} * {{ ansible_lsb.description }}"
+    
+- name: CLUSTER-PG | test availability file astra_update_version
+  stat:
+    path: /etc/astra_update_version
+  register: status_astra_update_version
+
+- name: CLUSTER-PG | save print file astra_update_version
+  command: cat /etc/astra_update_version
+  register: cat_astra_update_version
+  when: status_astra_update_version.stat.exists 
+  
+- name: CLUSTER-PG | print file astra_update_version
+  debug:
+    msg: "{{ cat_astra_update_version.stdout_lines }}" 
+  when: status_astra_update_version.stat.exists

@@ -1,0 +1,12 @@
+---
+# tasks file for setup_etcd
+
+#- name: CLUSTER ETCD | print hosts vars
+#  include: print_hosts_vars.yml
+  
+- name: CLUSTER ETCD | setup etcd
+  include: setup_etcd.yml
+  
+- name: CLUSTER ETCD | configure etcd
+  include: configure_etcd.yml
+

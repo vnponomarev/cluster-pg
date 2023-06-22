@@ -1,0 +1,17 @@
+[Unit]
+Description=Start PATRONI
+After=syslog.target
+After=network-online.target
+After=etcd.service
+[Service]
+PDPLabel=0:0:0
+LimitNOFILE=65535
+Type=simple
+KillMode=process
+Restart=on-failure
+User=postgres
+Group=postgres
+ExecStart=/opt/patroni-master/start_patroni.sh
+TimeoutSec=30
+[Install]
+WantedBy=multi-user.target

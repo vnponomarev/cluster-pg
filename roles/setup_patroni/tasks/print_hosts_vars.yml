@@ -1,0 +1,6 @@
+---
+# tasks file for setup_etcd
+
+- name: SETUP ETCD | print hosts vars
+  debug:
+   msg: "{{ vars  }}"

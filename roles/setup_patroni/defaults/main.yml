@@ -1,0 +1,27 @@
+---
+# defaults file for setup_patroni
+
+ansible_user                    : aladmin 
+# ansible_ssh_private_key_file    : /home/vponomarev/.ssh/id_rsa.pub 
+ansible_ssh_pass                : 08-Stend-2017
+
+# remote directories
+patroni_dir                        : /opt/patroni-master
+
+
+# data cluster patroni
+patroni_user                       : postgres
+patroni_port_postgres              : 5432
+patroni_port_server                : 8008
+etcd_port_client                   : 2379
+
+patroni_name_1                     : patroni-1
+patroni_ip_1                       : 192.168.119.61
+
+patroni_name_2                     : patroni-2
+patroni_ip_2                       : 192.168.119.62
+
+patroni_name_3                     : patroni-3
+patroni_ip_3                       : 192.168.119.63
+
+        

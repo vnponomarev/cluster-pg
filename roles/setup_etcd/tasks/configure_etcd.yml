@@ -1,0 +1,99 @@
+---
+# tasks file for configure_etcd
+
+- block: ### SETUP FOR ETCD-1
+  - name: Set fact
+    set_fact:
+      etcd:
+        etcd_name: "{{ etcd_name_1 }}"
+        etcd_ip: "{{ etcd_ip_1 }}"
+    
+#  - name: SETUP ETCD | show data  hosts
+#    debug:
+#      msg: "{{ etcd.etcd_name }} - {{ etcd.etcd_ip }}"
+  
+  - name: Template a file to /opt/etcd-3.4.22/etcd.yml
+    template:
+      src: etcd.yml.j2
+      dest: "{{ etcd_dir }}/etcd.yml"
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+  
+  when: ansible_host == etcd_ip_1
+
+- block: ### SETUP FOR ETCD-2
+  - name: Set fact
+    set_fact:
+      etcd:
+        etcd_name: "{{ etcd_name_2 }}"
+        etcd_ip: "{{ etcd_ip_2 }}"
+    
+#  - name: SETUP ETCD | show data  hosts
+#    debug:
+#      msg: "{{ etcd.etcd_name }} - {{ etcd.etcd_ip }}"
+      
+  - name: Template a file to /opt/etcd-3.4.22/etcd.yml
+    template:
+      src: etcd.yml.j2
+      dest: "{{ etcd_dir }}/etcd.yml"
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+  
+  when: ansible_host == etcd_ip_2
+
+- block: ### SETUP FOR ETCD-3
+  - name: Set fact
+    set_fact:
+      etcd:
+        etcd_name: "{{ etcd_name_3 }}"
+        etcd_ip: "{{ etcd_ip_3 }}"
+    
+#  - name: SETUP ETCD | show data  hosts
+#    debug:
+#      msg: "{{ etcd.etcd_name }} - {{ etcd.etcd_ip }}"
+
+  - name: Template a file to /opt/etcd-3.4.22/etcd.yml
+    template:
+      src: etcd.yml.j2
+      dest: "{{ etcd_dir }}/etcd.yml"
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+
+  when: ansible_host == etcd_ip_3
+
+- name: CLUSTER ETCD | create user etcd to remote hosts
+  user:
+    name: etcd
+    
+- name: CLUSTER ETCD | recursively change ownership of a directory
+  file:
+    path: /opt/etcd-3.4.22
+    state: directory
+    recurse: yes
+    owner: etcd
+    group: etcd
+  
+- name: CLUSTER ETCD | copy script start_etcd.sh to remote hosts
+  copy:
+     src: start_etcd.sh
+     dest: /opt/etcd-3.4.22
+     mode: "0755"
+  
+- name: CLUSTER ETCD | copy etcd.service
+  copy:
+    src: etcd.service
+    dest: /etc/systemd/system
+    
+- name: CLUSTER ETCD | daemon reload
+  systemd:
+    daemon_reload: true
+    
+- name: CLUSTER ETCD | enabled etcd.service
+  systemd:
+    name: etcd.service
+    enabled: true
+  
+- name: CLUSTER ETCD | started etcd.service
+  systemd:
+    name: etcd.service
+    state: restarted

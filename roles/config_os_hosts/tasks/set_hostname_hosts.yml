@@ -1,0 +1,22 @@
+---
+# tasks file for set_hostname_hosts
+
+- name: CLUSTER-PG | change hostname to inventory_hostname
+  template:
+    src: "hostname.j2"
+    dest: "{{ dir_hostname }}/hostname"
+
+- name:  CLUSTER-PG | change hosts to inventory_hostname
+  template:
+    src: "hosts.j2"
+    dest: "{{ dir_hosts }}/hosts"
+    
+- name: CLUSTER-PG | test set right hostname and hosts
+  debug:
+    msg: "{{ ansible_hostname }}"
+    
+- name: CLUSTER-PG | reboot all hosts 
+  shell: sleep 5 && sudo reboot now
+  async: 1
+  poll: 0
+

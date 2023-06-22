@@ -1,0 +1,98 @@
+---
+# tasks file for setup_patroni
+
+- block: ### PATRONI | setup patroni to server #1
+  - name: Set fact
+    set_fact:
+      patroni:
+        patroni_name: "{{ patroni_name_1 }}"
+        patroni_ip: "{{ patroni_ip_1 }}"
+    
+#  - name: SETUP ETCD | show data  hosts
+#    debug:
+#      msg: "{{ patroni.patroni_name }} - {{ patroni.patroni_ip }}"
+  
+  - name: Template a file to /opt/patroni-master
+    template:
+      src: patroni.yml.j2
+      dest: "{{ patroni_dir }}/patroni.yml"
+      owner: "{{ patroni_user }}"
+      group: "{{ patroni_user }}"
+  
+  when: ansible_host == patroni_ip_1
+
+- block: ### PATRONI | setup patroni to server #2
+  - name: Set fact
+    set_fact:
+      patroni:
+        patroni_name: "{{ patroni_name_2 }}"
+        patroni_ip: "{{ patroni_ip_2 }}"
+    
+#  - name: SETUP ETCD | show data  hosts
+#    debug:
+#      msg: "{{ patroni.patroni_name }} - {{ patroni.patroni_ip }}"
+      
+  - name: Template a file to /opt/patroni-master
+    template:
+      src: patroni.yml.j2
+      dest: "{{ patroni_dir }}/patroni.yml"
+      owner: "{{ patroni_user }}"
+      group: "{{ patroni_user }}"
+  
+  when: ansible_host == patroni_ip_2
+
+- block: ### PATRONI | setup patroni to server #3
+  - name: Set fact
+    set_fact:
+      patroni:
+        patroni_name: "{{ patroni_name_3 }}"
+        patroni_ip: "{{ patroni_ip_3 }}"
+    
+#  - name: SETUP ETCD | show data  hosts
+#    debug:
+#      msg: "{{ patroni.patroni_name }} - {{ patroni.patroni_ip }}"
+
+  - name: Template a file to /opt/patroni-master
+    template:
+      src: patroni.yml.j2
+      dest: "{{ patroni_dir }}/patroni.yml"
+      owner: "{{ patroni_user }}"
+      group: "{{ patroni_user }}"
+
+  when: ansible_host == patroni_ip_3
+  
+- name: PATRONI | stop service postgres, if running
+  systemd:
+    name: postgresql.service
+    state: stopped
+
+- name: PATRONI | disable and masked service postgres
+  systemd:
+    name: postgresql.service
+    enabled: false
+    masked: yes
+    
+- name: PATRONI | copy script start_patroni.sh to remote hosts
+  copy:
+     src: start_patroni.sh
+     dest: /opt/patroni-master
+     mode: "0755"
+  
+- name: PATRONI | copy patroni.service
+  copy:
+    src: patroni.service
+    dest: /etc/systemd/system
+    
+- name: PATRONI | daemon reload
+  systemd:
+    daemon_reload: true
+    
+- name: PATRONI | enabled etcd.service
+  systemd:
+    name: patroni.service
+    enabled: true
+  
+- name: PATRONI | started etcd.service
+  systemd:
+    name: patroni.service
+    state: restarted

@@ -1,0 +1,4 @@
+*.log
+.travis.yml
+*.retry
+

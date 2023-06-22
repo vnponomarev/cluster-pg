@@ -1,0 +1,62 @@
+---
+# tasks file for SETUP-CLUSTER-PG
+      
+- name: CLUSTER-PG | copy sources.list to hosts 
+  copy:
+    src: "sources.list"
+    dest: "{{ dir_sources_list }}"
+      
+- name: CLUSTER-PG | test file sources.list  exists?
+  stat:
+    path: "{{ dir_sources_list }}/sources.list"
+  register: stat_sources_list
+
+- name: CLUSTER-PG | update cache apt with new sources.list 
+  apt:
+    update_cache: yes   
+  when: stat_sources_list.stat.exists
+
+- name: CLUSTER-PG | astra-update exists?
+  stat:
+    path: /usr/sbin/astra-update
+  register: status_astra_update
+
+- name: CLUSTER-PG | install astra-update
+  apt:
+    name: astra-update
+    state: latest
+  when: status_astra_update.stat.exists == false 
+
+- name: CLUSTER-PG | test astra-update after install it
+  stat:
+    path: /usr/sbin/astra-update
+  register: status_astra_update
+
+- name: CLUSTER-PG | test postgres.service status
+  stat: 
+    path: /usr/share/postgresql-common/pg_ctlcluster
+  register: status_pg_ctlcluster
+
+- name: CLUSTER-PG | stop postgres.service status
+  systemd:
+    name: postgresql
+    state: stopped
+  when: status_pg_ctlcluster.stat.exists
+    
+- name: CLUSTER-PG | run astra-update -A -r
+  command: astra-update -A -r
+  when: status_astra_update.stat.exists 
+
+- name: CLUSTER-PG | reboot all 
+  shell: sleep 5 && sudo reboot now
+  async: 1
+  poll: 0
+  
+#- name: CLUSTER-PG | wait till all machines will reboot
+#  wait_for:
+#    host: "{{ inventory_hostname }}"
+#    state: started
+#    delay: 5
+#    timeout: 40
+#  delegate_to: 127.0.0.1
+  

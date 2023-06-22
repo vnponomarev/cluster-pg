@@ -1,0 +1,12 @@
+---
+# tasks file for config_os_hosts
+
+- name: CLUSTER-PG | Test host online
+  include: test_online_hosts.yml
+
+- name: CLUSTER-PG | Set network
+  include: set_network.yml
+
+- name: CLUSTER-PG | Set hostname and hosts
+  include: set_hostname_hosts.yml
+

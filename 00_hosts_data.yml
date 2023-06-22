@@ -1,0 +1,9 @@
+---
+- name: CLUSTER-PG | test_online_hosts
+  hosts: all 
+  become: yes
+
+  roles:
+    - test_online_hosts
+ 
+

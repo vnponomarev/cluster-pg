@@ -1,0 +1,8 @@
+---
+- name: SETUP ETCD 
+  hosts: all
+  gather_facts: yes
+  
+  roles:
+    - setup_patroni
+  

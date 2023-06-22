@@ -1,0 +1,83 @@
+---
+# tasks file for setup_etcd
+
+- name: CLUSTER ETCD | test install git ...
+  command:
+    cmd: dpkg -l git
+  register: status_git
+  ignore_errors: true 
+ 
+- name: CLUSTER ETCD | DEBUG
+  debug:
+    var: status_git.rc
+   
+- name: CLUSTER ETCD | ... and setup git if not install
+  apt:
+    name: git
+    state: present
+  when: status_git.rc == 1
+
+#- name: CLUSTER ETCD | test install postgres ...
+#  command:
+#    cmd: dpkg -l postgresql
+#  register: status_postgresql
+#  ignore_errors: true
+   
+#- name: CLUSTER ETCD | mkdir /opt/download
+#  file: 
+#    path: "{{ download_dir }}"
+#    state: directory
+#    owner: "{{ ansible_user }}"
+#    group: "{{ ansible_user }}"
+#    mode: 0775
+
+#- name: CLUSTER ETCD | copy files  etcd-3.4.22.tar.gz & go1.19.3.linux-amd64.tar.gz
+#  copy:
+#    src: "{{ item }}"
+#    dest: "{{ download_dir }}"
+#    owner: "{{ ansible_user }}"
+#    group: "{{ ansible_user }}"
+#  with_items:
+#    - etcd-3.4.22.tar.gz
+#    - go1.19.3.linux-amd64.tar.gz
+
+- name: CLUSTER ETCD | Extract etcd-3.4.22.tar.gz 
+  unarchive:
+    src: etcd-3.4.22.tar.gz
+    dest: /opt
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    
+- name: CLUSTER ETCD | Extract go1.19.3.linux-amd64.tar.gz 
+  unarchive:
+    src: go1.19.3.linux-amd64.tar.gz
+    dest: /usr/local
+    
+- name: CLUSTER ETCD | copy files  profile into /etc/profile
+  copy:
+    src: "profile"
+    dest: "/etc/profile"
+
+#- name: CLUSTER ETCD | add /usr/local/go/bin to $PATH
+#  lineinfile:
+#    path: /etc/profile
+#    insertafter: "export PATH"
+#    line: "export PATH=$PATH:/usr/local/go/bin"
+
+- name: CLUSTER ETCD | copy script etcd.sh to remote hosts
+  copy:
+     src: etcd.sh
+     dest: /tmp/
+     mode: "0755"
+  
+- name: Start script build
+  command:  /tmp/etcd.sh
+  
+- name: CLUSTER ETCD | delete script etcd.sh to remote hosts
+  file:
+     path: /tmp/etcd.sh
+     state: absent
+
+
+
+    

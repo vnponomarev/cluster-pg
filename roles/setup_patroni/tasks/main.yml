@@ -1,0 +1,12 @@
+---
+# tasks file for setup_patroni
+
+#- name: CLUSTER PATRONI | print hosts vars
+#  include: print_hosts_vars.yml
+  
+- name: CLUSTER PATRONI | setup patroni
+  include: setup_patroni.yml
+  
+- name: CLUSTER PATRONI | configure patroni
+  include: configure_patroni.yml
+

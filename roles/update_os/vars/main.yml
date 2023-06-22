@@ -1,0 +1,17 @@
+---
+# vars file for SETUP-UPAK
+ansible_user                    : aladmin 
+#ansible_ssh_private_key_file    : /home/vponomarev/.ssh/id_rsa.pub 
+ansible_ssh_pass                : 08-Stend-2017
+
+# remote directories
+dir_hostname                    : /etc
+dir_hosts                       : /etc
+dir_networkd                    : /etc/systemd/network
+dir_resolved                    : /etc/systemd
+dir_timesyncd                   : /etc/systemd
+dir_sources_list                : /etc/apt
+#network
+gw_network                      : 192.168.119.244
+mask_network                    : 24
+domaine_name                    : rsvo.dev
